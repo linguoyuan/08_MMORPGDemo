@@ -40,25 +40,10 @@ public class InfoWnd : WindowRoot {
     protected override void InitWnd()
     {
         base.InitWnd();
-        RegTouchEvts();
         Tils.SetActive(transDetail, false);
         RefreshUI();
-    }
 
-    private void RegTouchEvts()
-    {
-        /*
-        OnClickDown(imgChar.gameObject, (PointerEventData evt) => 
-        {
-            startPos = evt.position;
-            MainCitySys.Instance.SetStartRoate();
-        });
-        OnDrag(imgChar.gameObject, (PointerEventData evt) => 
-        {
-            float roate = -(evt.position.x - startPos.x) * 0.4f;
-            MainCitySys.Instance.SetPlayerRoate(roate);
-        });
-        */
+        btnClose.GetComponent<Button>().onClick.AddListener(ClickCloseBtn);
     }
 
     private void RefreshUI()
@@ -91,7 +76,7 @@ public class InfoWnd : WindowRoot {
     public void ClickCloseBtn()
     {
         audioSvc.PlayUIMusic(Constants.UIClickBtn);
-        //Gam.CloseInfoWnd();
+        MainCitySys.Instance.CloseInfoWnd();
     }
     public void ClickDetailBtn()
     {

@@ -18,6 +18,7 @@ public class MainCityWnd : WindowRoot
     //主城按钮显隐
     public Animation menuAni;
     public Button btnMenu;
+    public Button btnHeadOpen;
     private bool menuState = true;
 
     protected override void InitWnd()
@@ -26,6 +27,7 @@ public class MainCityWnd : WindowRoot
         RefreshUI();
 
         btnMenu.GetComponent<Button>().onClick.AddListener(ClickMenuBtn);
+        btnHeadOpen.GetComponent<Button>().onClick.AddListener(ClickHeadBtn);
     }
 
     private void RefreshUI()
@@ -86,5 +88,11 @@ public class MainCityWnd : WindowRoot
             clip = menuAni.GetClip("CloseMCMenu");
         }
         menuAni.Play(clip.name);
+    }
+
+    public void ClickHeadBtn()
+    {
+        audioSvc.PlayUIMusic(Constants.UIOpenPage);
+        MainCitySys.Instance.OpenInfoWnd();
     }
 }

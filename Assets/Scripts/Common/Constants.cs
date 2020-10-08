@@ -19,6 +19,7 @@ public class Constants {
     //常规UI点击音效
     public const string UIClickBtn = "uiClickBtn";
     public const string UIExtenBtn = "uiExtenBtn";
+    public const string UIOpenPage = "uiOpenPage";
 
     //屏幕标准宽高
     public const int ScreenStandardWidth = 1334;

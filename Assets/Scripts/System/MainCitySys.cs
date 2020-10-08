@@ -7,6 +7,9 @@ public class MainCitySys : SystemRoot
 {
     public MainCityWnd mainCityWnd;
     public LoadingWnd loadingWnd;
+    public InfoWnd infoWnd;
+    //public GuideWnd guideWnd;
+
     private MapCfg mapData;
     private PlayerController playerCtrl;
     public static MainCitySys Instance;
@@ -42,7 +45,11 @@ public class MainCitySys : SystemRoot
         //播放主城背景音乐
         audioSvc.PlayBgMusic(Constants.BGMainCity);
 
-        //TODO 设置人物展示相机
+        //设置人物展示相机
+        if (charCamTrans != null)
+        {
+            charCamTrans.gameObject.SetActive(false);
+        }
     }
 
     private IEnumerator LoadPlayer(MapCfg mapData)
@@ -80,4 +87,47 @@ public class MainCitySys : SystemRoot
         }
         playerCtrl.Dir = dir;
     }
+
+
+    #region Info Wnd
+    private Transform charCamTrans;
+    public void OpenInfoWnd()
+    {
+        /*
+        StopNavTask();
+        */
+        if (charCamTrans == null)
+        {
+            charCamTrans = GameObject.FindGameObjectWithTag("CharShowCam").transform;
+        }
+
+        //设置人物展示相机相对位置
+        charCamTrans.localPosition = playerCtrl.transform.position + playerCtrl.transform.forward * 3.8f + new Vector3(0, 1.2f, 0);
+        charCamTrans.localEulerAngles = new Vector3(0, 180 + playerCtrl.transform.localEulerAngles.y, 0);
+        charCamTrans.localScale = Vector3.one;
+        charCamTrans.gameObject.SetActive(true);
+        
+        infoWnd.SetWndState();
+    }
+
+    public void CloseInfoWnd()
+    {
+        if (charCamTrans != null)
+        {
+            charCamTrans.gameObject.SetActive(false);
+            infoWnd.SetWndState(false);
+        }
+    }
+
+    private float startRoate = 0;
+    public void SetStartRoate()
+    {
+        startRoate = playerCtrl.transform.localEulerAngles.y;
+    }
+
+    public void SetPlayerRoate(float roate)
+    {
+        playerCtrl.transform.localEulerAngles = new Vector3(0, startRoate + roate, 0);
+    }
+    #endregion
 }
