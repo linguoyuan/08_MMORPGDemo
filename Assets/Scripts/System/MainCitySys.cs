@@ -2,23 +2,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
+using PEProtocol;
 
 public class MainCitySys : SystemRoot
 {
     public MainCityWnd mainCityWnd;
     public LoadingWnd loadingWnd;
     public InfoWnd infoWnd;
-    //public GuideWnd guideWnd;
+    public GuideWnd guideWnd;
 
     private MapCfg mapData;
     private PlayerController playerCtrl;
+    private CharacterController characterController;
     public static MainCitySys Instance;
+
+    private Transform[] npcPosTrans;
+    GameObject map;
+    MainCityMap mcm;
 
     public override void InitSys()
     {
         Instance = this;
         base.InitSys();
-        Debug.Log("Init MainCitySys");
+        Debug.Log("Init MainCitySys");        
     }
 
     /// <summary>
@@ -26,6 +33,7 @@ public class MainCitySys : SystemRoot
     /// </summary>
     public void EnterMainCity()
     {
+        //此时还没加载好主城场景，不能使用主城场景的游戏物体
         mapData = xmlConfigSvc.GetMapCfgData(Constants.MainCityMapID);
         mainCityWnd.SetWndState();
         //resSvc.AsyncLoadScene(Constants.SceneMainCity, loadingWnd.SetProgress, LoadMainCityDone);
@@ -71,12 +79,22 @@ public class MainCitySys : SystemRoot
         animator.applyRootMotion = true;
         playerCtrl = player.GetComponent<PlayerController>();
         playerCtrl.Init();
+        nav = player.GetComponent<NavMeshAgent>();
+        characterController = player.GetComponent<CharacterController>();
 
-        
+        //获取主城NPC位置
+        map = GameObject.FindGameObjectWithTag("MapRoot");
+        if (map == null)
+        {
+            Debug.Log("map == null");
+        }
+        mcm = map.GetComponent<MainCityMap>();
+        npcPosTrans = mcm.NpcPosTrans;
     }
 
     public void SetMoveDir(Vector2 dir)
     {
+        StopNavTask();
         if (dir == Vector2.zero)
         {
             playerCtrl.SetBlend(Constants.BlendIdle);
@@ -93,9 +111,9 @@ public class MainCitySys : SystemRoot
     private Transform charCamTrans;
     public void OpenInfoWnd()
     {
-        /*
+        
         StopNavTask();
-        */
+        
         if (charCamTrans == null)
         {
             charCamTrans = GameObject.FindGameObjectWithTag("CharShowCam").transform;
@@ -128,6 +146,127 @@ public class MainCitySys : SystemRoot
     public void SetPlayerRoate(float roate)
     {
         playerCtrl.transform.localEulerAngles = new Vector3(0, startRoate + roate, 0);
+    }
+    #endregion
+
+    #region Guide Wnd
+    private NavMeshAgent nav;
+    private bool isNavGuide = false;
+    private AutoGuideCfg curtTaskData;
+    public void RunTask(AutoGuideCfg agc)
+    {
+        if (agc != null)
+        {
+            curtTaskData = agc;
+        }
+
+        //解析任务数据
+        nav.enabled = true;
+        Debug.Log("curtTaskData.npcID = " + curtTaskData.npcID);
+        if (curtTaskData.npcID != -1)
+        {
+            float dis = Vector3.Distance(playerCtrl.transform.position, npcPosTrans[agc.npcID].position);
+            if (dis < 0.5f)
+            {
+                isNavGuide = false;
+                nav.isStopped = true;
+                characterController.enabled = true;
+                playerCtrl.SetBlend(Constants.BlendIdle);
+                nav.enabled = false;
+
+                OpenGuideWnd();
+            }
+            else
+            {
+                isNavGuide = true;
+                nav.enabled = true;
+                nav.speed = Constants.PlayerMoveSpeed;
+                nav.SetDestination(npcPosTrans[agc.npcID].position);
+                playerCtrl.SetBlend(Constants.BlendWalk);
+            }
+        }
+        else
+        {
+            OpenGuideWnd();
+        }
+    }
+
+    private void Update()
+    {
+        if (isNavGuide)
+        {
+            characterController.enabled = false;
+            IsArriveNavPos();
+            playerCtrl.SetCam();
+        }
+    }
+
+    private void IsArriveNavPos()
+    {
+        float dis = Vector3.Distance(playerCtrl.transform.position, npcPosTrans[curtTaskData.npcID].position);
+        if (dis < 0.5f)
+        {
+            isNavGuide = false;
+            nav.isStopped = true;
+            playerCtrl.SetBlend(Constants.BlendIdle);
+            nav.enabled = false;
+
+            OpenGuideWnd();
+        }
+    }
+
+    private void StopNavTask()
+    {
+        characterController.enabled = true;
+        Debug.Log("isNavGuide = " + isNavGuide);
+        if (isNavGuide)
+        {
+            isNavGuide = false;           
+            nav.isStopped = true;
+            nav.enabled = false;
+            playerCtrl.SetBlend(Constants.BlendIdle);
+        }
+    }
+
+    private void OpenGuideWnd()
+    {
+        guideWnd.SetWndState();
+    }
+
+    public AutoGuideCfg GetCurtTaskData()
+    {
+        return curtTaskData;
+    }
+
+    public void RspGuide(GameMsg msg)
+    {
+        RspGuide data = msg.rspGuide;
+
+        GameRoot.AddTips(Constants.Color("任务奖励 金币+" + curtTaskData.coin + "  经验+" + curtTaskData.exp, TxtColor.Blue));
+
+        switch (curtTaskData.actID)
+        {
+            case 0:
+                //与智者对话
+                break;
+            case 1:
+                //TODO 进入副本
+                break;
+            case 2:
+                //TODO 进入强化界面
+                break;
+            case 3:
+                //TODO 进入体力购买
+                break;
+            case 4:
+                //TODO 进入金币铸造
+                break;
+            case 5:
+                //TODO 进入世界聊天
+                break;
+        }
+        GameRoot.Single.SetPlayerDataByGuide(data);
+        mainCityWnd.RefreshUI();
     }
     #endregion
 }

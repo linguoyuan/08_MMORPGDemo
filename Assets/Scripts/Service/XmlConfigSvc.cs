@@ -155,4 +155,72 @@ public class XmlConfigSvc : MonoSingleton<XmlConfigSvc>
         return null;
     }
     #endregion
+
+
+    #region 自动引导配置
+    private Dictionary<int, AutoGuideCfg> guideTaskDic = new Dictionary<int, AutoGuideCfg>();
+    public void InitGuideCfg(string path)
+    {
+        TextAsset xml = Resources.Load<TextAsset>(path);
+        if (!xml)
+        {
+            PECommon.Log("xml file:" + path + " not exist", LogType.Error);
+        }
+        else
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(xml.text);
+
+            XmlNodeList nodLst = doc.SelectSingleNode("root").ChildNodes;
+
+            for (int i = 0; i < nodLst.Count; i++)
+            {
+                XmlElement ele = nodLst[i] as XmlElement;
+
+                if (ele.GetAttributeNode("ID") == null)
+                {
+                    continue;
+                }
+                int ID = Convert.ToInt32(ele.GetAttributeNode("ID").InnerText);
+                AutoGuideCfg mc = new AutoGuideCfg
+                {
+                    ID = ID
+                };
+
+                foreach (XmlElement e in nodLst[i].ChildNodes)
+                {
+                    switch (e.Name)
+                    {
+                        case "npcID":
+                            mc.npcID = int.Parse(e.InnerText);
+                            break;
+                        case "dilogArr":
+                            mc.dilogArr = e.InnerText;
+                            break;
+                        case "actID":
+                            mc.actID = int.Parse(e.InnerText);
+                            break;
+                        case "coin":
+                            mc.coin = int.Parse(e.InnerText);
+                            break;
+                        case "exp":
+                            mc.exp = int.Parse(e.InnerText);
+                            break;
+                    }
+                }
+                guideTaskDic.Add(ID, mc);
+            }
+        }
+    }
+    public AutoGuideCfg GetAutoGuideData(int id)
+    {
+        AutoGuideCfg agc = null;
+        if (guideTaskDic.TryGetValue(id, out agc))
+        {
+            return agc;
+        }
+        return null;
+    }
+
+    #endregion
 }

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using PEProtocol;
+using System;
 
 public class GameRoot : MonoBehaviour {
 
@@ -62,6 +63,7 @@ public class GameRoot : MonoBehaviour {
         XmlConfigSvc xml = GetComponent<XmlConfigSvc>();
         xml.InitRDNameCfg(PathDefine.RDNameCfg);
         xml.InitMapCfg(PathDefine.MapCfg);
+        xml.InitGuideCfg(PathDefine.GuideCfg);
 
         //test
         //GameObject cube = res.LoadPrefab(PathDefine.cube, true);
@@ -92,5 +94,13 @@ public class GameRoot : MonoBehaviour {
     public void SetPlayerName(string name)
     {
         PlayerData.name = name;
+    }
+
+    public void SetPlayerDataByGuide(RspGuide data)
+    {
+        PlayerData.coin = data.coin;
+        PlayerData.lv = data.lv;
+        PlayerData.exp = data.exp;
+        PlayerData.guideid = data.guideid;
     }
 }

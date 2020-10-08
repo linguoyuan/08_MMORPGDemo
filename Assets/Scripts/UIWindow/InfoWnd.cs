@@ -44,6 +44,8 @@ public class InfoWnd : WindowRoot {
         RefreshUI();
 
         btnClose.GetComponent<Button>().onClick.AddListener(ClickCloseBtn);
+        btnDetail.GetComponent<Button>().onClick.AddListener(ClickDetailBtn);
+        btnCloseDetail.GetComponent<Button>().onClick.AddListener(ClickCloseDetailBtn);
     }
 
     private void RefreshUI()

@@ -13,6 +13,7 @@ public class CreateWnd : WindowRoot
         base.InitWnd();
         btnRandomName.GetComponent<Button>().onClick.AddListener(ClickRandomNameBtn);
         btnEnterMainCity.GetComponent<Button>().onClick.AddListener(ClickEnterMainCity);
+        Debug.Log("iptName.text = " + iptName.text);
     }
 
     private void ClickRandomNameBtn()

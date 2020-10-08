@@ -21,6 +21,10 @@ public class MainCityWnd : WindowRoot
     public Button btnHeadOpen;
     private bool menuState = true;
 
+    //自动任务按钮
+    public Button btnGuide;
+    private AutoGuideCfg curtTaskData;
+
     protected override void InitWnd()
     {
         base.InitWnd();
@@ -28,9 +32,10 @@ public class MainCityWnd : WindowRoot
 
         btnMenu.GetComponent<Button>().onClick.AddListener(ClickMenuBtn);
         btnHeadOpen.GetComponent<Button>().onClick.AddListener(ClickHeadBtn);
+        btnGuide.GetComponent<Button>().onClick.AddListener(ClickGuideBtn);
     }
 
-    private void RefreshUI()
+    public void RefreshUI()
     {
         PlayerData pd = GameRoot.Single.PlayerData;
         Tils.SetText(txtFight, PECommon.GetFightByProps(pd));
@@ -68,6 +73,18 @@ public class MainCityWnd : WindowRoot
                 img.fillAmount = 0;//其余的显示空经验条
             }
         }
+
+
+        //设置自动任务图标
+        curtTaskData = xmlCfgSvc.GetAutoGuideData(pd.guideid);
+        if (curtTaskData != null)
+        {
+            SetGuideBtnIcon(curtTaskData.npcID);
+        }
+        else
+        {
+            SetGuideBtnIcon(-1);
+        }
     }
 
     /// <summary>
@@ -94,5 +111,48 @@ public class MainCityWnd : WindowRoot
     {
         audioSvc.PlayUIMusic(Constants.UIOpenPage);
         MainCitySys.Instance.OpenInfoWnd();
+    }
+
+    /// <summary>
+    /// 动态更新新手引导头像
+    /// </summary>
+    /// <param name="npcID"></param>
+    private void SetGuideBtnIcon(int npcID)
+    {
+        string spPath = "";
+        Image img = btnGuide.GetComponent<Image>();
+        switch (npcID)
+        {
+            case Constants.NPCWiseMan:
+                spPath = PathDefine.WiseManHead;
+                break;
+            case Constants.NPCGeneral:
+                spPath = PathDefine.GeneralHead;
+                break;
+            case Constants.NPCArtisan:
+                spPath = PathDefine.ArtisanHead;
+                break;
+            case Constants.NPCTrader:
+                spPath = PathDefine.TraderHead;
+                break;
+            default:
+                spPath = PathDefine.TaskHead;
+                break;
+        }
+        SetSprite(img, spPath);
+    }
+
+    public void ClickGuideBtn()
+    {
+        audioSvc.PlayUIMusic(Constants.UIClickBtn);
+
+        if (curtTaskData != null)
+        {
+            MainCitySys.Instance.RunTask(curtTaskData);
+        }
+        else
+        {
+            GameRoot.AddTips("更多引导任务，正在开发中...");
+        }
     }
 }

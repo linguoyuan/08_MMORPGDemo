@@ -58,8 +58,9 @@ public class ResSvc : MonoSingleton<ResSvc>
         }
 
         //加载完成后执行done
-        done();
         ao.allowSceneActivation = true;
+        Debug.Log("加载完成");
+        done();
     }
 
     private Dictionary<string, AudioClip> adDic = new Dictionary<string, AudioClip>();
@@ -138,5 +139,27 @@ public class ResSvc : MonoSingleton<ResSvc>
             go = Instantiate(prefab, position, Quaternion.identity);
         }
         return go;
+    }
+
+
+    private Dictionary<string, Sprite> spDic = new Dictionary<string, Sprite>();
+    /// <summary>
+    /// 加载精灵图片
+    /// </summary>
+    /// <param name="path"></param>
+    /// <param name="cache"></param>
+    /// <returns></returns>
+    public Sprite LoadSprite(string path, bool cache = false)
+    {
+        Sprite sp = null;
+        if (!spDic.TryGetValue(path, out sp))
+        {
+            sp = Resources.Load<Sprite>(path);
+            if (cache)
+            {
+                spDic.Add(path, sp);
+            }
+        }
+        return sp;
     }
 }

@@ -98,6 +98,9 @@ public class NetSvc : MonoSingleton<NetSvc>
                 Debug.Log("receive RspRename");
                 GameRoot.Single.loginSys.RspRename(msg);
                 break;
+            case CMD.RspGuide:
+                MainCitySys.Instance.RspGuide(msg);
+                break;
         }
     }
 }
