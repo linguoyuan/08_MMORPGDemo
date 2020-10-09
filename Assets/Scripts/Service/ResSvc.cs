@@ -141,6 +141,17 @@ public class ResSvc : MonoSingleton<ResSvc>
         return go;
     }
 
+    public StrongCfg GetStrongData(int currentIndex, int nextStartLv)
+    {
+        //TODO
+        throw new NotImplementedException();
+    }
+
+    public int GetPropAddValPreLv(int currentIndex, int nextStartLv, int v)
+    {
+        //TODO
+        throw new NotImplementedException();
+    }
 
     private Dictionary<string, Sprite> spDic = new Dictionary<string, Sprite>();
     /// <summary>

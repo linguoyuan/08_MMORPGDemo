@@ -60,6 +60,7 @@ public class Constants
     public const string UIClickBtn = "uiClickBtn";
     public const string UIExtenBtn = "uiExtenBtn";
     public const string UIOpenPage = "uiOpenPage";
+    public const string FBItemEnter = "fbitem";
 
     //屏幕标准宽高
     public const int ScreenStandardWidth = 1334;

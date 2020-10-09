@@ -11,6 +11,7 @@ public class MainCitySys : SystemRoot
     public LoadingWnd loadingWnd;
     public InfoWnd infoWnd;
     public GuideWnd guideWnd;
+    public StrongWnd strongWnd;
 
     private MapCfg mapData;
     private PlayerController playerCtrl;
@@ -63,7 +64,7 @@ public class MainCitySys : SystemRoot
     private IEnumerator LoadPlayer(MapCfg mapData)
     //private void LoadPlayer(MapCfg mapData)//这里需要让场景加载完成后再实例化主角，不然实例化不出来
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.5f);
         //GameObject player = resSvc.LoadPrefab(PathDefine.AssissnCityPlayerPrefab, true);      
         //实例化的时候需要给位置，不然实例化出来，人物会掉下去
         GameObject player = resSvc.LoadPrefabByPos(PathDefine.AssissnCityPlayerPrefab, mapData.playerBornPos, true);      
@@ -266,6 +267,24 @@ public class MainCitySys : SystemRoot
                 break;
         }
         GameRoot.Single.SetPlayerDataByGuide(data);
+        mainCityWnd.RefreshUI();
+    }
+    #endregion
+
+    #region Strong Wnd
+    public void OpenStrongWnd()
+    {
+        strongWnd.SetWndState();
+    }
+
+    public void RspStrong(GameMsg msg)
+    {
+        int zhanliPre = PECommon.GetFightByProps(GameRoot.Single.PlayerData);
+        GameRoot.Single.SetPlayerDataByStrong(msg.rspStrong);
+        int zhanliNow = PECommon.GetFightByProps(GameRoot.Single.PlayerData);
+        GameRoot.AddTips(Constants.Color("战力提升" + (zhanliNow - zhanliPre), TxtColor.Green));
+
+        strongWnd.UpdateUI();
         mainCityWnd.RefreshUI();
     }
     #endregion

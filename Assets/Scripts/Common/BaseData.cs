@@ -24,3 +24,15 @@ public class AutoGuideCfg : BaseData<AutoGuideCfg>
     public int coin;
     public int exp;
 }
+
+public class StrongCfg : BaseData<StrongCfg>
+{
+    public int pos;
+    public int startlv;
+    public int addhp;
+    public int addhurt;
+    public int adddef;
+    public int minlv;
+    public int coin;
+    public int crystal;//Ë®¾§
+}

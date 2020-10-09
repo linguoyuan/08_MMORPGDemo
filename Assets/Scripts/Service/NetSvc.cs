@@ -79,11 +79,28 @@ public class NetSvc : MonoSingleton<NetSvc>
         {
             switch ((ErrorCode)msg.err)
             {
+                case ErrorCode.ServerDataError:
+                    PECommon.Log("服务器数据异常", LogType.Error);
+                    GameRoot.AddTips("客户端数据异常");
+                    break;
+                case ErrorCode.UpdateDBError:
+                    PECommon.Log("数据库更新异常", LogType.Error);
+                    GameRoot.AddTips("网络不稳定");
+                    break;
                 case ErrorCode.AcctIsOnline:
                     GameRoot.AddTips("当前账号已经上线");
                     break;
                 case ErrorCode.WrongPass:
                     GameRoot.AddTips("密码错误");
+                    break;
+                case ErrorCode.LackLevel:
+                    GameRoot.AddTips("角色等级不够");
+                    break;
+                case ErrorCode.LackCoin:
+                    GameRoot.AddTips("金币数量不够");
+                    break;
+                case ErrorCode.LackCrystal:
+                    GameRoot.AddTips("水晶数量不够");
                     break;
             }
             return;
@@ -99,7 +116,12 @@ public class NetSvc : MonoSingleton<NetSvc>
                 GameRoot.Single.loginSys.RspRename(msg);
                 break;
             case CMD.RspGuide:
+                Debug.Log("receive RspGuide");
                 MainCitySys.Instance.RspGuide(msg);
+                break;
+            case CMD.RspStrong:
+                Debug.Log("receive RspStrong");
+                MainCitySys.Instance.RspStrong(msg);
                 break;
         }
     }

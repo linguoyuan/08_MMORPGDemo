@@ -64,6 +64,7 @@ public class GameRoot : MonoBehaviour {
         xml.InitRDNameCfg(PathDefine.RDNameCfg);
         xml.InitMapCfg(PathDefine.MapCfg);
         xml.InitGuideCfg(PathDefine.GuideCfg);
+        xml.InitStrongCfg(PathDefine.StrongCfg);
 
         //test
         //GameObject cube = res.LoadPrefab(PathDefine.cube, true);
@@ -102,5 +103,18 @@ public class GameRoot : MonoBehaviour {
         PlayerData.lv = data.lv;
         PlayerData.exp = data.exp;
         PlayerData.guideid = data.guideid;
+    }
+
+    public void SetPlayerDataByStrong(RspStrong data)
+    {
+        PlayerData.coin = data.coin;
+        PlayerData.crystal = data.crystal;
+        PlayerData.hp = data.hp;
+        PlayerData.ad = data.ad;
+        PlayerData.ap = data.ap;
+        PlayerData.addef = data.addef;
+        PlayerData.apdef = data.apdef;
+
+        PlayerData.strongArr = data.strongArr;
     }
 }

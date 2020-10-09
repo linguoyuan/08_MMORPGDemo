@@ -19,6 +19,7 @@ public class MainCityWnd : WindowRoot
     public Animation menuAni;
     public Button btnMenu;
     public Button btnHeadOpen;
+    public Button btnStrongOpen;
     private bool menuState = true;
 
     //自动任务按钮
@@ -33,6 +34,7 @@ public class MainCityWnd : WindowRoot
         btnMenu.GetComponent<Button>().onClick.AddListener(ClickMenuBtn);
         btnHeadOpen.GetComponent<Button>().onClick.AddListener(ClickHeadBtn);
         btnGuide.GetComponent<Button>().onClick.AddListener(ClickGuideBtn);
+        btnStrongOpen.GetComponent<Button>().onClick.AddListener(ClickStrongBtn);
     }
 
     public void RefreshUI()
@@ -154,5 +156,11 @@ public class MainCityWnd : WindowRoot
         {
             GameRoot.AddTips("更多引导任务，正在开发中...");
         }
+    }
+
+    private void ClickStrongBtn()
+    {
+        audioSvc.PlayUIMusic(Constants.UIClickBtn);
+        MainCitySys.Instance.OpenStrongWnd();
     }
 }
