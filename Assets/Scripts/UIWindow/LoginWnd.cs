@@ -40,7 +40,7 @@ public class LoginWnd : WindowRoot
         if (_acct != "" && _pass != "")
         {
             PlayerPrefs.SetString("Acct", _acct);
-            PlayerPrefs.SetString("Pass", _acct);
+            PlayerPrefs.SetString("Pass", _pass);
 
             GameMsg msg = new GameMsg
             {

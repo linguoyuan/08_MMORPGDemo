@@ -1,4 +1,5 @@
-﻿using PEProtocol;
+﻿using System;
+using PEProtocol;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -20,6 +21,10 @@ public class MainCityWnd : WindowRoot
     public Button btnMenu;
     public Button btnHeadOpen;
     public Button btnStrongOpen;
+    public Button btnChatOpen;
+    public Button btnBuyOpen;
+    public Button btnPowerOpen;
+    public Button btnTaskOpen;
     private bool menuState = true;
 
     //自动任务按钮
@@ -31,10 +36,14 @@ public class MainCityWnd : WindowRoot
         base.InitWnd();
         RefreshUI();
 
-        btnMenu.GetComponent<Button>().onClick.AddListener(ClickMenuBtn);
-        btnHeadOpen.GetComponent<Button>().onClick.AddListener(ClickHeadBtn);
-        btnGuide.GetComponent<Button>().onClick.AddListener(ClickGuideBtn);
-        btnStrongOpen.GetComponent<Button>().onClick.AddListener(ClickStrongBtn);
+        btnMenu.onClick.AddListener(ClickMenuBtn);
+        btnHeadOpen.onClick.AddListener(ClickHeadBtn);
+        btnGuide.onClick.AddListener(ClickGuideBtn);
+        btnStrongOpen.onClick.AddListener(ClickStrongBtn);
+        btnChatOpen.onClick.AddListener(ClickChatBtn);
+        btnBuyOpen.onClick.AddListener(ClickBuyBtn);
+        btnPowerOpen.onClick.AddListener(ClickPowerBtn);
+        btnTaskOpen.onClick.AddListener(ClickTaskBtn);
     }
 
     public void RefreshUI()
@@ -162,5 +171,29 @@ public class MainCityWnd : WindowRoot
     {
         audioSvc.PlayUIMusic(Constants.UIClickBtn);
         MainCitySys.Instance.OpenStrongWnd();
+    }
+
+    private void ClickChatBtn()
+    {
+        audioSvc.PlayBgMusic(Constants.UIClickBtn);
+        MainCitySys.Instance.OpenChatWnd();
+    }
+
+    private void ClickBuyBtn()
+    {
+        audioSvc.PlayUIMusic(Constants.UIClickBtn);
+        MainCitySys.Instance.OpenBuyWnd(1);
+    }
+
+    private void ClickPowerBtn()
+    {
+        audioSvc.PlayUIMusic(Constants.UIClickBtn);
+        MainCitySys.Instance.OpenBuyWnd(0);
+    }
+
+    private void ClickTaskBtn()
+    {
+        audioSvc.PlayBgMusic(Constants.UIClickBtn);
+        MainCitySys.Instance.OpenTaskWnd();
     }
 }

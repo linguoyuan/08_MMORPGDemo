@@ -15,6 +15,8 @@ public class WindowRoot : MonoBehaviour
     public XmlConfigSvc xmlCfgSvc = null;
     [HideInInspector]
     public NetSvc netSvc = null;
+    [HideInInspector]
+    protected TimerSvc timerSvc = null;
 
     public void SetWndState(bool isActive = true)
     {
@@ -39,6 +41,7 @@ public class WindowRoot : MonoBehaviour
         audioSvc = AudioSvc.Single;
         xmlCfgSvc = XmlConfigSvc.Single;
         netSvc = NetSvc.Single;
+        timerSvc = TimerSvc.Single;
     }
 
     protected virtual void ClearWnd()
@@ -47,6 +50,7 @@ public class WindowRoot : MonoBehaviour
         audioSvc = null;
         xmlCfgSvc = null;
         netSvc = null;
+        timerSvc = null;
     }
 
     #region tools
@@ -54,6 +58,11 @@ public class WindowRoot : MonoBehaviour
     {
         Sprite sp = resSvc.LoadSprite(path, true);
         img.sprite = sp;
+    }
+
+    public bool  GetWndState()
+    {
+        return gameObject.activeSelf;
     }
     #endregion
 

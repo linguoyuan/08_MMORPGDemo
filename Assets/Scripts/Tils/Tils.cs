@@ -51,4 +51,16 @@ public static class Tils
     {
         SetText(txt, num.ToString());
     }
+
+    public static Transform GetTrans(Transform trans, string name)
+    {
+        if  (trans != null)
+        {
+            return trans.Find(name);
+        }
+        else
+        {
+            return trans.Find(name);
+        }
+    }
 }

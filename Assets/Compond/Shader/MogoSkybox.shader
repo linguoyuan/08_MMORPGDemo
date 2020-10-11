@@ -58,7 +58,7 @@ SubShader {
 	Cull Off ZWrite Off Fog { Mode Off }
 	Color [_Tint]
 	Pass {
-		SetTexture [_FrontTex] { combine texture +- primary, texture * primary }
+		Tils.SetTexture [_FrontTex] { combine texture +- primary, texture * primary }
 	}
 	
 }

@@ -12,6 +12,9 @@ public class MainCitySys : SystemRoot
     public InfoWnd infoWnd;
     public GuideWnd guideWnd;
     public StrongWnd strongWnd;
+    public ChatWnd chatWnd;
+    public BuyWnd buyWnd;
+    public TaskWnd taskWnd;
 
     private MapCfg mapData;
     private PlayerController playerCtrl;
@@ -182,6 +185,7 @@ public class MainCitySys : SystemRoot
                 isNavGuide = true;
                 nav.enabled = true;
                 nav.speed = Constants.PlayerMoveSpeed;
+                Debug.Log("npcPosTrans = " + npcPosTrans + "-----" +  "pos = " + npcPosTrans[agc.npcID].position);
                 nav.SetDestination(npcPosTrans[agc.npcID].position);
                 playerCtrl.SetBlend(Constants.BlendWalk);
             }
@@ -198,7 +202,7 @@ public class MainCitySys : SystemRoot
         {
             characterController.enabled = false;
             IsArriveNavPos();
-            playerCtrl.SetCam();
+            playerCtrl.SetCam();           
         }
     }
 
@@ -211,7 +215,12 @@ public class MainCitySys : SystemRoot
             nav.isStopped = true;
             playerCtrl.SetBlend(Constants.BlendIdle);
             nav.enabled = false;
-
+            //因为导航组将和Character组件有冲突，如果设置了nav为false之后，不把Character组件设置able，位置显示会有问题
+            characterController.enabled = true;
+            Debug.Log("characterController.enabled =" + characterController.enabled);
+            Debug.Log("isNavGuide = " + isNavGuide);
+            //playerCtrl.gameObject.transform.position = npcPosTrans[curtTaskData.npcID].position;
+            Debug.Log(playerCtrl.gameObject.transform.position);
             OpenGuideWnd();
         }
     }
@@ -219,7 +228,6 @@ public class MainCitySys : SystemRoot
     private void StopNavTask()
     {
         characterController.enabled = true;
-        Debug.Log("isNavGuide = " + isNavGuide);
         if (isNavGuide)
         {
             isNavGuide = false;           
@@ -254,16 +262,20 @@ public class MainCitySys : SystemRoot
                 //TODO 进入副本
                 break;
             case 2:
-                //TODO 进入强化界面
+                //进入强化界面
+                OpenStrongWnd();
                 break;
             case 3:
-                //TODO 进入体力购买
+                //进入体力购买
+                OpenBuyWnd(0);
                 break;
             case 4:
-                //TODO 进入金币铸造
+                //进入金币铸造
+                OpenBuyWnd(1);
                 break;
             case 5:
-                //TODO 进入世界聊天
+                //进入世界聊天
+                OpenChatWnd();
                 break;
         }
         GameRoot.Single.SetPlayerDataByGuide(data);
@@ -286,6 +298,84 @@ public class MainCitySys : SystemRoot
 
         strongWnd.UpdateUI();
         mainCityWnd.RefreshUI();
+    }
+    #endregion
+
+    #region Chat Wnd
+    public void RspPshChat(GameMsg msg)
+    {
+        chatWnd.RspPshChat(msg);
+    }
+
+    public void OpenChatWnd()
+    {
+        chatWnd.SetWndState();
+    }
+    #endregion
+
+    #region Buy Wnd
+    public void OpenBuyWnd(int type)
+    {
+        StopNavTask();
+        buyWnd.SetBuyType(type);
+        buyWnd.SetWndState();
+    }
+
+    public void RspBuy(GameMsg msg)
+    {
+        RspBuy data = msg.rspBuy;
+        GameRoot.Single.SetPlayerDataByBuy(data);
+        GameRoot.AddTips("购买成功");
+
+        mainCityWnd.RefreshUI();
+        buyWnd.SetWndState(false);
+
+        if (msg.pshTaskPrgs != null)
+        {
+            GameRoot.Single.SetPlayerDataByTaskPsh(msg.pshTaskPrgs);
+            if (taskWnd.GetWndState())
+            {
+                taskWnd.RefreshUI();
+            }
+        }
+    }
+
+    public void PshPower(GameMsg msg)
+    {
+        PshPower data = msg.pshPower;
+        GameRoot.Single.SetPlayerDataByPower(data);
+        if (mainCityWnd.gameObject.activeSelf)
+        {
+            mainCityWnd.RefreshUI();
+        }
+    }
+
+    #endregion
+
+    #region Task wnd
+    public void OpenTaskWnd()
+    {
+        taskWnd.SetWndState();
+    }
+
+    public void RspTakeTaskReward(GameMsg msg)
+    {
+        RspTakeTaskReward data = msg.rspTakeTaskReward;
+        GameRoot.Single.SetPlayerDataByTask(data);
+
+        taskWnd.RefreshUI();
+        mainCityWnd.RefreshUI();
+    }
+
+    public void PshTaskPrgs(GameMsg msg)
+    {
+        PshTaskPrgs data = msg.pshTaskPrgs;
+        GameRoot.Single.SetPlayerDataByTaskPsh(data);
+
+        if (taskWnd.GetWndState())
+        {
+            taskWnd.RefreshUI();
+        }
     }
     #endregion
 }

@@ -353,4 +353,67 @@ public class XmlConfigSvc : MonoSingleton<XmlConfigSvc>
         return val;
     }
     #endregion
+
+    #region 任务系统配置
+    private Dictionary<int, TaskRewardCfg> taskRewareDic = new Dictionary<int, TaskRewardCfg>();
+    public void InitTaskRewardCfg(string path)
+    {
+        TextAsset xml = Resources.Load<TextAsset>(path);
+        if (!xml)
+        {
+            PECommon.Log("xml file:" + path + " not exist", LogType.Error);
+        }
+        else
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(xml.text);
+
+            XmlNodeList nodLst = doc.SelectSingleNode("root").ChildNodes;
+
+            for (int i = 0; i < nodLst.Count; i++)
+            {
+                XmlElement ele = nodLst[i] as XmlElement;
+
+                if (ele.GetAttributeNode("ID") == null)
+                {
+                    continue;
+                }
+                int ID = Convert.ToInt32(ele.GetAttributeNode("ID").InnerText);
+                TaskRewardCfg trc = new TaskRewardCfg
+                {
+                    ID = ID
+                };
+
+                foreach (XmlElement e in nodLst[i].ChildNodes)
+                {
+                    switch (e.Name)
+                    {
+                        case "taskName":
+                            trc.taskName = e.InnerText;
+                            break;
+                        case "count":
+                            trc.count = int.Parse(e.InnerText);
+                            break;
+                        case "exp":
+                            trc.exp = int.Parse(e.InnerText);
+                            break;
+                        case "coin":
+                            trc.coin = int.Parse(e.InnerText);
+                            break;
+                    }
+                }
+                taskRewareDic.Add(ID, trc);
+            }
+        }
+    }
+    public TaskRewardCfg GetTaskRewardCfg(int id)
+    {
+        TaskRewardCfg trc = null;
+        if (taskRewareDic.TryGetValue(id, out trc))
+        {
+            return trc;
+        }
+        return null;
+    }
+    #endregion
 }

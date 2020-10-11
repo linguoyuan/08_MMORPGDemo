@@ -34,7 +34,7 @@ public class GuideWnd : WindowRoot
         {
             //自己
             SetSprite(imgIcon, PathDefine.SelfIcon);
-            Tils.SetText(txtName, pd.name);
+           Tils.SetText(txtName, pd.name);
         }
         else
         {
@@ -43,29 +43,29 @@ public class GuideWnd : WindowRoot
             {
                 case 0:
                     SetSprite(imgIcon, PathDefine.WiseManIcon);
-                    Tils.SetText(txtName, "智者");
+                   Tils.SetText(txtName, "智者");
                     break;
                 case 1:
                     SetSprite(imgIcon, PathDefine.GeneralIcon);
-                    Tils.SetText(txtName, "将军");
+                   Tils.SetText(txtName, "将军");
                     break;
                 case 2:
                     SetSprite(imgIcon, PathDefine.ArtisanIcon);
-                    Tils.SetText(txtName, "工匠");
+                   Tils.SetText(txtName, "工匠");
                     break;
                 case 3:
                     SetSprite(imgIcon, PathDefine.TraderIcon);
-                    Tils.SetText(txtName, "商人");
+                   Tils.SetText(txtName, "商人");
                     break;
                 default:
                     SetSprite(imgIcon, PathDefine.GuideIcon);
-                    Tils.SetText(txtName, "小芸");
+                   Tils.SetText(txtName, "小芸");
                     break;
             }
         }
 
         imgIcon.SetNativeSize();
-        Tils.SetText(txtTalk, talkArr[1].Replace("$name", pd.name));
+       Tils.SetText(txtTalk, talkArr[1].Replace("$name", pd.name));
     }
 
 

@@ -87,6 +87,9 @@ public class NetSvc : MonoSingleton<NetSvc>
                     PECommon.Log("数据库更新异常", LogType.Error);
                     GameRoot.AddTips("网络不稳定");
                     break;
+                case ErrorCode.ClientDataError:
+                    PECommon.Log("客户端数据异常", LogType.Error);
+                    break;
                 case ErrorCode.AcctIsOnline:
                     GameRoot.AddTips("当前账号已经上线");
                     break;
@@ -101,6 +104,9 @@ public class NetSvc : MonoSingleton<NetSvc>
                     break;
                 case ErrorCode.LackCrystal:
                     GameRoot.AddTips("水晶数量不够");
+                    break;
+                case ErrorCode.LackDiamond:
+                    GameRoot.AddTips("钻石数量不够");                   
                     break;
             }
             return;
@@ -122,6 +128,22 @@ public class NetSvc : MonoSingleton<NetSvc>
             case CMD.RspStrong:
                 Debug.Log("receive RspStrong");
                 MainCitySys.Instance.RspStrong(msg);
+                break;
+            case CMD.PshChat:
+                Debug.Log("receive PshChat");
+                MainCitySys.Instance.RspPshChat(msg);
+                break;
+            case CMD.RspBuy:
+                MainCitySys.Instance.RspBuy(msg);
+                break;
+            case CMD.PshPower:
+                MainCitySys.Instance.PshPower(msg);
+                break;
+            case CMD.RspTakeTaskReward:
+                MainCitySys.Instance.RspTakeTaskReward(msg);
+                break;
+            case CMD.PshTaskPrgs:
+                MainCitySys.Instance.PshTaskPrgs(msg);
                 break;
         }
     }

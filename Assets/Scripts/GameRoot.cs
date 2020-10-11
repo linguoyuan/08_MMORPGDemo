@@ -45,11 +45,12 @@ public class GameRoot : MonoBehaviour {
     private void Init()
     {
         //服务模块初始化
+        TimerSvc timerSvc = GetComponent<TimerSvc>();
+        timerSvc.InitSvc();
         NetSvc net = GetComponent<NetSvc>();
         net.InitSvc();
         ResSvc res = GetComponent<ResSvc>();
         res.InitSvc();
-
         AudioSvc audio = GetComponent<AudioSvc>();
         audio.Init();
 
@@ -65,6 +66,7 @@ public class GameRoot : MonoBehaviour {
         xml.InitMapCfg(PathDefine.MapCfg);
         xml.InitGuideCfg(PathDefine.GuideCfg);
         xml.InitStrongCfg(PathDefine.StrongCfg);
+        xml.InitTaskRewardCfg(PathDefine.TaskCfg);
 
         //test
         //GameObject cube = res.LoadPrefab(PathDefine.cube, true);
@@ -116,5 +118,30 @@ public class GameRoot : MonoBehaviour {
         PlayerData.apdef = data.apdef;
 
         PlayerData.strongArr = data.strongArr;
+    }
+
+    public void SetPlayerDataByBuy(RspBuy data)
+    {
+        PlayerData.diamond = data.dimond;
+        PlayerData.coin = data.coin;
+        PlayerData.power = data.power;
+    }
+
+    public void SetPlayerDataByPower(PshPower data)
+    {
+        PlayerData.power = data.power;
+    }
+
+    public void SetPlayerDataByTask(RspTakeTaskReward data)
+    {
+        PlayerData.coin = data.coin;
+        PlayerData.lv = data.lv;
+        PlayerData.exp = data.exp;
+        PlayerData.taskArr = data.taskArr;
+    }
+
+    public void SetPlayerDataByTaskPsh(PshTaskPrgs data)
+    {
+        PlayerData.taskArr = data.taskArr;
     }
 }
