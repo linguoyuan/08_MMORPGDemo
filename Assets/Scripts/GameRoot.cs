@@ -18,11 +18,8 @@ public class GameRoot : MonoBehaviour {
         }
     }
 
-
-    //public LoadingWnd loadingWnd;
     public LoginSys loginSys;
     public DynamicWnd dynamicWnd;
-    public MainCitySys mainCitySys;
 
     void Start ()
     {
@@ -41,7 +38,12 @@ public class GameRoot : MonoBehaviour {
         }
         dynamicWnd.SetWndState();
     }
-	
+
+    public void SetPlayerDataByFBStart(RspFBFight data)
+    {
+        playerData.power = data.power;
+    }
+
     private void Init()
     {
         //服务模块初始化
@@ -59,6 +61,10 @@ public class GameRoot : MonoBehaviour {
         login.InitSys();
         MainCitySys mainCity = GetComponent<MainCitySys>();
         mainCity.InitSys();
+        FubenSys fubenSys = GetComponent<FubenSys>();
+        fubenSys.InitSys();
+        BattleSys battleSys = GetComponent<BattleSys>();
+        battleSys.InitSys();
 
         //配置文件系统初始化
         XmlConfigSvc xml = GetComponent<XmlConfigSvc>();

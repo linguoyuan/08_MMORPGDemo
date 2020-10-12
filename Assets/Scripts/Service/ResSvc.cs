@@ -12,9 +12,6 @@ public class ResSvc : MonoSingleton<ResSvc>
         Debug.Log("Init ResSvc");
     }
 
-    int displayProgress = 0;
-    int toProgress = 0;
-
     /// <summary>
     /// 加载场景
     /// </summary>
@@ -28,6 +25,8 @@ public class ResSvc : MonoSingleton<ResSvc>
     }
     private IEnumerator ReallyAsyncLoadScene(string name, Action<int> callback, Action done)
     {
+        int displayProgress = 0;
+        int toProgress = 0;
         AsyncOperation ao = SceneManager.LoadSceneAsync(name);
         ao.allowSceneActivation = false;
         while (ao.progress < 0.9f)
@@ -60,6 +59,7 @@ public class ResSvc : MonoSingleton<ResSvc>
         //加载完成后执行done
         ao.allowSceneActivation = true;
         Debug.Log("加载完成");
+        yield return new WaitForSeconds(0.2f);
         done();
     }
 

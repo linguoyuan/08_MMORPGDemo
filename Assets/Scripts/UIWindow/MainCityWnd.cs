@@ -25,6 +25,7 @@ public class MainCityWnd : WindowRoot
     public Button btnBuyOpen;
     public Button btnPowerOpen;
     public Button btnTaskOpen;
+    public Button btnFubenOpen;
     private bool menuState = true;
 
     //自动任务按钮
@@ -44,6 +45,7 @@ public class MainCityWnd : WindowRoot
         btnBuyOpen.onClick.AddListener(ClickBuyBtn);
         btnPowerOpen.onClick.AddListener(ClickPowerBtn);
         btnTaskOpen.onClick.AddListener(ClickTaskBtn);
+        btnFubenOpen.onClick.AddListener(ClickFubenBtn);
     }
 
     public void RefreshUI()
@@ -196,4 +198,11 @@ public class MainCityWnd : WindowRoot
         audioSvc.PlayBgMusic(Constants.UIClickBtn);
         MainCitySys.Instance.OpenTaskWnd();
     }
+
+    private void ClickFubenBtn()
+    {
+        audioSvc.PlayBgMusic(Constants.UIClickBtn);
+        MainCitySys.Instance.OpenFubenWnd();
+    }
+
 }

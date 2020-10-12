@@ -39,10 +39,8 @@ public class LoginSys : SystemRoot {
         else
         {
             Debug.Log("进入主城场景");
-            //打开主城的界面
-            GameRoot.Single.mainCitySys.mainCityWnd.SetWndState();
             //进入主城
-            GameRoot.Single.mainCitySys.EnterMainCity();
+            MainCitySys.Instance.EnterMainCity();
         }
 
         //关闭登录界面
@@ -54,9 +52,9 @@ public class LoginSys : SystemRoot {
         GameRoot.Single.SetPlayerName(msg.rspRename.name);
 
         //跳转场景进入主城
-        GameRoot.Single.mainCitySys.EnterMainCity();
+        MainCitySys.Instance.EnterMainCity();
         //打开主城的界面
-        GameRoot.Single.mainCitySys.mainCityWnd.SetWndState();
+        MainCitySys.Instance.mainCityWnd.SetWndState();
 
         //关闭创建界面
         createWnd.SetWndState(false);

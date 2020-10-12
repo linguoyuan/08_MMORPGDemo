@@ -53,7 +53,7 @@ public class TouchEvtsHandler : MonoBehaviour
             imgDirBg.transform.position = defaultPos;
             Tils.SetActive(imgDirPoint, false);
             imgDirPoint.transform.localPosition = Vector2.zero;
-            GameRoot.Single.mainCitySys.SetMoveDir(Vector2.zero);
+            MainCitySys.Instance.SetMoveDir(Vector2.zero);
         });
 
         OnDrag(imgTouch.gameObject, (PointerEventData evt) => 
@@ -69,7 +69,7 @@ public class TouchEvtsHandler : MonoBehaviour
             {
                 imgDirPoint.transform.position = evt.position;
             }
-            GameRoot.Single.mainCitySys.SetMoveDir(dir.normalized);
+            MainCitySys.Instance.SetMoveDir(dir.normalized);
         });
     }
 }

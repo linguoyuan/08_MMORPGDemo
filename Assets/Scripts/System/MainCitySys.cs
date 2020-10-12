@@ -37,9 +37,9 @@ public class MainCitySys : SystemRoot
     /// </summary>
     public void EnterMainCity()
     {
+        loadingWnd.SetWndState();
         //此时还没加载好主城场景，不能使用主城场景的游戏物体
-        mapData = xmlConfigSvc.GetMapCfgData(Constants.MainCityMapID);
-        mainCityWnd.SetWndState();
+        mapData = xmlConfigSvc.GetMapCfgData(Constants.MainCityMapID);        
         //resSvc.AsyncLoadScene(Constants.SceneMainCity, loadingWnd.SetProgress, LoadMainCityDone);
         resSvc.AsyncLoadScene(mapData.sceneName, loadingWnd.SetProgress, LoadMainCityDone);
     }
@@ -376,6 +376,13 @@ public class MainCitySys : SystemRoot
         {
             taskWnd.RefreshUI();
         }
+    }
+    #endregion
+
+    #region Fuben wnd
+    public void OpenFubenWnd()
+    {
+        FubenSys.Instance.OpenFubenWnd();
     }
     #endregion
 }

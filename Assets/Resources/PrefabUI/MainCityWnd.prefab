@@ -2320,7 +2320,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 70, y: 80}
+  m_AnchoredPosition: {x: 70, y: 96}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1297430718644500991
@@ -2358,7 +2358,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 2
     m_MaxSize: 40
-    m_Alignment: 0
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -4587,6 +4587,7 @@ MonoBehaviour:
   btnBuyOpen: {fileID: 1297430718778616997}
   btnPowerOpen: {fileID: 1297430719042466872}
   btnTaskOpen: {fileID: 1297430718894990409}
+  btnFubenOpen: {fileID: 1297430718083924358}
   btnGuide: {fileID: 1297430718633949878}
 --- !u!1 &1508154078198027051
 GameObject:

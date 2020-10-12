@@ -108,6 +108,9 @@ public class NetSvc : MonoSingleton<NetSvc>
                 case ErrorCode.LackDiamond:
                     GameRoot.AddTips("钻石数量不够");                   
                     break;
+                case ErrorCode.LackPower:
+                    GameRoot.AddTips("体力值不足");
+                    break;
             }
             return;
         }
@@ -144,6 +147,10 @@ public class NetSvc : MonoSingleton<NetSvc>
                 break;
             case CMD.PshTaskPrgs:
                 MainCitySys.Instance.PshTaskPrgs(msg);
+                break;
+            case CMD.RspFBFight:
+                Debug.Log("receiv RspFBFight");
+                FubenSys.Instance.RspFBFight(msg);
                 break;
         }
     }
