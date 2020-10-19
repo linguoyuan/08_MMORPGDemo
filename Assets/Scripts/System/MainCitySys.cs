@@ -105,7 +105,7 @@ public class MainCitySys : SystemRoot
         }
         else
         {
-            playerCtrl.SetBlend(Constants.BlendWalk);
+            playerCtrl.SetBlend(Constants.BlendMove);
         }
         playerCtrl.Dir = dir;
     }
@@ -187,7 +187,7 @@ public class MainCitySys : SystemRoot
                 nav.speed = Constants.PlayerMoveSpeed;
                 Debug.Log("npcPosTrans = " + npcPosTrans + "-----" +  "pos = " + npcPosTrans[agc.npcID].position);
                 nav.SetDestination(npcPosTrans[agc.npcID].position);
-                playerCtrl.SetBlend(Constants.BlendWalk);
+                playerCtrl.SetBlend(Constants.BlendMove);
             }
         }
         else

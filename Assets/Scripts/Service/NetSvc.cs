@@ -6,16 +6,30 @@ using UnityEngine;
 public class NetSvc : MonoSingleton<NetSvc>
 {
     private static readonly string obj = "lock";
+    private static readonly string msgLogLock = "lockLog";
     PESocket<ClientSession, GameMsg> client = null;
     private Queue<GameMsg> msgQue = new Queue<GameMsg>();
+    private Queue<Dictionary<string, int>> msgLog = new Queue<Dictionary<string, int>>();
 
 
     public void InitSvc()
     {
 
         client = new PESocket<ClientSession, GameMsg>();
+
+        lock(msgLogLock)
+        {
+            //Dictionary<string, int> msg = msgLog.Dequeue();
+            
+        }
+
         client.SetLog(true, (string msg, int lv) => 
         {
+            Dictionary<string, int> msgTemp = new Dictionary<string, int>();
+            msgTemp.Add(msg, lv);
+            msgLog.Enqueue(msgTemp);
+
+            /*
             switch (lv)
             {
                 case 0:
@@ -35,6 +49,7 @@ public class NetSvc : MonoSingleton<NetSvc>
                     Debug.Log(msg);
                     break;
             }
+            */
         });
         client.StartAsClient(SrvCfg.srvIP, SrvCfg.srvPort);
         PECommon.Log("Init NetSvc...");
@@ -70,6 +85,39 @@ public class NetSvc : MonoSingleton<NetSvc>
                 GameMsg msg = msgQue.Dequeue();
                 ProcessMsg(msg);
             }
+        }
+
+        if (msgLog.Count > 0)
+        {
+            lock(msgLogLock)
+            {
+                Dictionary<string, int> msgTemp = new Dictionary<string, int>();
+                msgTemp = msgLog.Dequeue();
+                string msg = "";
+                foreach (var item in msgTemp)
+                {
+                    msg = item.Key;
+                    switch (item.Value)
+                    {
+                        case 0:
+                            msg = "Log:" + msg;
+                            Debug.Log(msg);
+                            break;
+                        case 1:
+                            msg = "Warn:" + msg;
+                            Debug.LogWarning(msg);
+                            break;
+                        case 2:
+                            msg = "Error:" + msg;
+                            Debug.LogError(msg);
+                            break;
+                        case 3:
+                            msg = "Info:" + msg;
+                            Debug.Log(msg);
+                            break;
+                    }
+                }
+            }  
         }
     }
 

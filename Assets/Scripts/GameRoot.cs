@@ -69,10 +69,14 @@ public class GameRoot : MonoBehaviour {
         //配置文件系统初始化
         XmlConfigSvc xml = GetComponent<XmlConfigSvc>();
         xml.InitRDNameCfg(PathDefine.RDNameCfg);
+        xml.InitMonsterCfg(PathDefine.MonsterCfg);
         xml.InitMapCfg(PathDefine.MapCfg);
         xml.InitGuideCfg(PathDefine.GuideCfg);
         xml.InitStrongCfg(PathDefine.StrongCfg);
         xml.InitTaskRewardCfg(PathDefine.TaskCfg);
+        xml.InitSkillCfg(PathDefine.SkillCfg);
+        xml.InitSkillMoveCfg(PathDefine.SkillMoveCfg);
+        xml.InitSkillActionCfg(PathDefine.SkillActionCfg);
 
         //test
         //GameObject cube = res.LoadPrefab(PathDefine.cube, true);

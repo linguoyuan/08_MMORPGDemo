@@ -177,7 +177,7 @@ public class MainCityWnd : WindowRoot
 
     private void ClickChatBtn()
     {
-        audioSvc.PlayBgMusic(Constants.UIClickBtn);
+        audioSvc.PlayUIMusic(Constants.UIClickBtn);
         MainCitySys.Instance.OpenChatWnd();
     }
 
@@ -195,13 +195,13 @@ public class MainCityWnd : WindowRoot
 
     private void ClickTaskBtn()
     {
-        audioSvc.PlayBgMusic(Constants.UIClickBtn);
+        audioSvc.PlayUIMusic(Constants.UIClickBtn);
         MainCitySys.Instance.OpenTaskWnd();
     }
 
     private void ClickFubenBtn()
     {
-        audioSvc.PlayBgMusic(Constants.UIClickBtn);
+        audioSvc.PlayUIMusic(Constants.UIClickBtn);
         MainCitySys.Instance.OpenFubenWnd();
     }
 

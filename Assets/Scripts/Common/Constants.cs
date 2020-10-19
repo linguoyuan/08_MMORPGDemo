@@ -9,6 +9,14 @@ public enum TxtColor
     Blue,
     Yellow
 }
+
+public enum DamageType
+{
+    None,
+    AD = 1,
+    AP = 2
+}
+
 /// <summary>
 /// 常量配置类
 /// </summary>
@@ -72,7 +80,7 @@ public class Constants
 
     //混合参数
     public const int BlendIdle = 0;
-    public const int BlendWalk = 1;
+    public const int BlendMove = 1;
 
     //角色移动速度
     public const int PlayerMoveSpeed = 8;
@@ -80,5 +88,8 @@ public class Constants
 
     //运动平滑加速度
     public const float AccelerSpeed = 5;
+
+    //Action触发参数
+    public const int ActionDefault = -1;
 
 }

@@ -9,10 +9,17 @@ public class PathDefine {
     public const string GuideCfg = "ResCfgs/guide";
     public const string StrongCfg = "ResCfgs/strong";
     public const string TaskCfg = "ResCfgs/taskreward";
+
+    public const string SkillCfg = "ResCfgs/skill";
+    public const string SkillMoveCfg = "ResCfgs/skillmove";
+    public const string SkillActionCfg = "ResCfgs/skillaction";
+
+    public const string MonsterCfg = "ResCfgs/monster";
     #endregion
 
     #region Player
     public const string AssissnCityPlayerPrefab = "PrefabPlayer/AssassinCity";
+    public const string AssissnBattlePlayerPrefab = "PrefabPlayer/AssassinBattle";
     public const string cube = "Cube";
     #endregion
 
